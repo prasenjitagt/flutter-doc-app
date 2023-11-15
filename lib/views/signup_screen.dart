@@ -309,7 +309,9 @@ class _SignUpState extends State<SignUp> {
                                 fontSize: 15, fontWeight: FontWeight.w500)),
                         TextButton(
                             onPressed: () {
-                              Get.to(() => const Login());
+                              Get.off(const Login(),
+                                  transition: Transition.cupertinoDialog,
+                                  duration: Duration(milliseconds: 1000));
                             },
                             child: const Text("Log in",
                                 style: TextStyle(color: Colors.green)))

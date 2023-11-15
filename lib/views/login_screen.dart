@@ -43,8 +43,7 @@ class _LoginState extends State<Login> {
           .user;
 
       if (user != null) {
-        Get.to(() => const Home());
-        Navigator.of(context).pop();
+        Get.off(const Home(), transition: Transition.cupertino);
       }
     } on FirebaseAuthException catch (e) {
       print("Error ${e.code}");
@@ -67,8 +66,8 @@ class _LoginState extends State<Login> {
           duration: Duration(seconds: 1),
           isDismissible: true,
           overlayBlur: 3);
+      Navigator.of(context).pop();
     }
-    Navigator.of(context).pop();
   }
 
   //login animation circular
@@ -219,7 +218,9 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                         onPressed: () {
-                          Get.to(() => const ForgotPass());
+                          Get.to(const ForgotPass(),
+                              transition: Transition.cupertinoDialog,
+                              duration: Duration(milliseconds: 1000));
                         },
                         child: const Text("Forgot Password!",
                             style: TextStyle(color: Colors.green))),
@@ -231,7 +232,9 @@ class _LoginState extends State<Login> {
                                 fontSize: 15, fontWeight: FontWeight.w500)),
                         TextButton(
                             onPressed: () {
-                              Get.to(() => const SignUp());
+                              Get.off(const SignUp(),
+                                  transition: Transition.cupertinoDialog,
+                                  duration: Duration(milliseconds: 1000));
                             },
                             child: const Text("Sing up",
                                 style: TextStyle(color: Colors.green)))
