@@ -52,18 +52,18 @@ class _LoginState extends State<Login> {
             "Error",
             style: TextStyle(color: Colors.red[300], fontSize: 25),
           ),
-          messageText: Text(
+          messageText: const Text(
             "Check Your Email and Password",
-            style: TextStyle(color: Colors.green[300], fontSize: 15),
+            style: TextStyle(color: Colors.black, fontSize: 18),
           ),
           snackPosition: SnackPosition.TOP,
-          margin: EdgeInsets.only(top: 100),
+          margin: const EdgeInsets.only(top: 100),
           borderColor: Colors.green[300],
           borderWidth: 1,
           borderRadius: 12,
           maxWidth: (MediaQuery.of(context).size.width) - 50,
-          animationDuration: Duration(milliseconds: 300),
-          duration: Duration(seconds: 1),
+          animationDuration: const Duration(milliseconds: 300),
+          duration: const Duration(seconds: 1),
           isDismissible: true,
           overlayBlur: 3);
       Navigator.of(context).pop();

@@ -41,41 +41,68 @@ class _SignUpState extends State<SignUp> {
   User? currentUser = FirebaseAuth.instance.currentUser;
 
   // handling signup
-  void _handleSignUp() {
+  void _handleSignUp() async {
+    //Text Controllers
+
     var userName = _userNameController.text.trim();
     var userPhone = _userPhoneController.text.trim();
     var userEmail = _userEmailController.text.trim();
     var userPassword = _userPasswordController.text.trim();
-    if (_isBoxChecked) {
-      FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: userEmail, password: userPassword)
-          .then((value) => {
-                //printing user created
 
-                debugPrint("User created"),
+    //if the dialogbox is checked
+    if (_isBoxChecked == true) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: userEmail, password: userPassword);
 
-                FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(currentUser!.uid)
-                    .set({
-                  'userName': userName,
-                  'userPhone': userPhone,
-                  'userEmail': userEmail,
-                  'timeStamp': DateTime.now(),
-                  'userId': currentUser!.uid,
-                }).then((value) => {
-                          FirebaseAuth.instance.signOut(),
-                          Get.to(() => const Login())
-                        }),
-
-                //printing document created
-                debugPrint("doc created"),
-
-                //
-              })
-          .onError((error, stackTrace) =>
-              {debugPrint("Error! ${error.toString()}")});
+        //printing user created
+        debugPrint("User created");
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(currentUser!.uid)
+            .set({
+          'userName': userName,
+          'userPhone': userPhone,
+          'userEmail': userEmail,
+          'timeStamp': DateTime.now(),
+          'userId': currentUser!.uid,
+        });
+        await FirebaseAuth.instance.signOut();
+        Get.to(() => const Login(),
+            transition: Transition.cupertinoDialog,
+            duration: const Duration(milliseconds: 1000));
+//printing document created
+        debugPrint("doc created");
+      } on FirebaseAuthException catch (e) {
+        debugPrint(e.code);
+        Navigator.of(context);
+      }
+    } else {
+      Get.snackbar(
+          "Hi, there!", "Please agree to our Terms and Conditions to continue",
+          titleText: Text(
+            "Hi, there!",
+            style: TextStyle(color: Colors.red[300], fontSize: 25),
+          ),
+          messageText: const Text(
+            "Please agree to our Terms and Condition",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          snackPosition: SnackPosition.TOP,
+          margin: const EdgeInsets.only(top: 100),
+          borderColor: Colors.green[300],
+          borderWidth: 1,
+          borderRadius: 12,
+          maxWidth: (MediaQuery.of(context).size.width) - 50,
+          animationDuration: const Duration(milliseconds: 300),
+          duration: const Duration(seconds: 1),
+          isDismissible: true,
+          overlayBlur: 3);
     }
   }
 
