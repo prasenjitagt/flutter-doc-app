@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
           .user;
 
       if (user != null) {
-        Get.off(const Home(), transition: Transition.cupertino);
+        Get.offAll(const Home(), transition: Transition.cupertino);
       }
     } on FirebaseAuthException catch (e) {
       print("Error ${e.code}");
